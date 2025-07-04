@@ -1,0 +1,393 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.headerdiv{
+    display: flex;
+    width: 80vw;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    
+}
+.logo img{
+    width: 10vw;
+    animation: spin 1s 0s ;
+}
+.logo img:hover {
+  animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spin{
+    from{
+        transform: rotate(0deg);
+    }to{
+        transform: rotate(360deg);
+    }
+}
+.pages ul{
+    display: flex;
+    justify-content: space-between;
+    width: 15vw;
+}
+.pages a{
+    text-decoration: none;
+    color: black;
+}
+.pages ul li{
+  border-bottom: 5px double  red;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5vh;
+}
+#allproducts{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3vh;
+}
+.cards{
+    background-color: #ffe0b2;
+    border-radius: 5px;
+    text-align: center;
+}
+li{
+    display: inline-block;
+}
+#allcategories{
+    width: 80vw;
+    display: flex;
+    justify-content: space-between;
+}
+
+.main{
+    display: flex;
+    justify-content: space-between;
+    width: 80vw;
+}
+aside{
+    width: 16vw;
+    height: 50vh;
+    background-color: #f0f4f8;
+    border-radius: 5px;
+    border: none;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    text-align: center;
+    align-items: center;
+}
+.chekbox{
+  width: 10vw;
+  text-align: start;
+}
+.buttons{
+    display: flex;
+    align-items: center;
+   flex-direction: column;
+   gap: 2vh;
+   width: 18w;
+}
+.filter{
+  width: 10vw;
+}
+.asidebtn{
+    width: 10vw;
+    height: 4vh;
+    background-color: #64b5f6;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.5s ease-in-out;
+    transition: color 0.5s ease-in-out;
+    cursor: pointer;
+}
+.asidebtn:hover{
+  background-color: #ff7043;
+  color: white;
+}
+.filter{
+  display: flex;
+  justify-content: space-around;
+}
+
+.addcart{
+    display: flex;
+    justify-content: space-around;
+    width: -webkit-fill-available;
+    align-items: center;
+}
+
+.addbtn{
+    width: 5vw;
+    height: 4vh;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.5s ease-in-out;
+     background-color: #ff7043
+}
+.addbtn:hover{
+    transform:scale(1.1);
+}
+.cards{
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    transition: transform 0.5s ease-in-out;
+
+}
+
+.cards:hover{
+    transform:scale(1.1);
+}
+
+.categories a{
+    text-decoration: none;
+    color: black;
+    transition:color 0.7s ease;
+
+}
+
+
+
+.categories {
+  position: relative;  
+  padding: 5px 15px;
+  border: 5px double red;
+  background-color: #64b5f6;
+transition:background-color 0.7s ease;
+}
+
+.categories:hover{
+  background-color: #ff7043;
+  
+}
+.categories a:hover{
+  color: white;
+}
+
+footer{
+  height: 30vh;
+  width: 90vw;
+  background-color:#ff7043;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.contact2{
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+}
+.contact2 button{
+  text-align: start;
+  background: none;
+  border: none;
+}
+
+
+
+/* ანიმაციები */
+.spiciP .pepper {
+  display: inline-block;
+  position: relative;
+  color: red;
+  font-size: 20px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.spiciP .pepper::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  background: rgba(255, 0, 0, 0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  animation: heatGlow 2s infinite ease-out;
+  z-index: -1;
+  filter: blur(8px);
+}
+#responsivebtn{
+  display: none;
+}
+#responsivefilter{
+  display: none;
+}
+
+/* cart */
+
+
+#cartcontainer{
+width: 90vw;
+background-color: #ff7043;
+height: auto;
+}
+
+.cartlist{
+  display: flex;
+  width: 90vw;
+
+}
+.remove{
+  display: none;
+}
+
+.cartlist{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.description{
+  display: flex;
+  justify-content: space-around;
+}
+
+.minus{
+  border-radius: 50%;
+  height: 30px;
+  width:30px;
+  background: none;
+  border: none;
+  background-color: red;
+}
+.plus{
+  border-radius: 50%;
+  height: 30px;
+  width:30px;
+   background: none;
+   border: none;
+   background-color: green;
+}
+.quantity{
+  height: 30px;
+  width:30px;
+  border: none;
+}
+.removebtn{
+  background: none;
+  border: none;
+}
+
+
+
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes heatGlow {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.4);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
+}
+
+
+
+
+@media(max-width:580px){
+  .headerdiv ul{
+    width: 50vw;
+  }
+  .headerdiv ul li a{
+    font-size: 12px;
+  }
+  .main{
+    flex-direction: column;
+  }
+  #allproducts{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+  
+  }
+  .logo img{
+    width: 15vw;
+  }
+  .cards{
+    width: 30vw;
+    height: auto;
+  }
+  .cards img{
+    width: 28vw !important;
+  }
+  .cards h2{
+    font-size: 15px;
+  }
+  .addbtn{
+    width: 12vw;
+    height: 3vh;
+    font-size: 10px;
+  }
+  .addcart p{
+    width: 12vw;
+  }
+  .spiciP{
+    font-size: 12px;
+  }
+  #allcategories{
+    display: none;
+    
+  }
+ 
+  #allcategories.active {
+    display: flex; 
+  }
+  #responsivebtn{
+    display: block;
+   
+  }
+ .nav{
+  display: flex;
+  width: 80vw;
+  justify-content: space-between;
+  align-items: center;
+ }
+ .nav button{
+  background:none;
+  border: none;
+  font-size: 10px;
+ }
+ 
+ aside{
+  display: none;
+ }
+ .showfilter{
+  display: block;
+ }
+}
+
+.responsivefilter{
+  width: 30vw;
+  height: 50vh;
+  margin-top: 20vh;
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+    <title>online resturant</title>
+</head>
+<body>
+    <header>
+        <div class="headerdiv">
+            <div class="logo">
+                <img src="remove transparent b.png" alt="">
+            </div>
+            <div class="pages">
+                <ul>
+                    <li>
+                        <a href="">Home</a>
+                    </li>
+                    <li><a target="_blank" href="cart.html">
+                        Cart
+                    </a></li>
+                    <li>
+                       <a href="">Sign in</a> 
+                    </li>
+                    <li><a href="">
+                        Registration
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+<div class="nav">
+    
+    <div>
+    <button id="responsivefilter"><i class="fa-solid fa-filter"></i> <span>filter</span></button>
+    </div>
+    <div>
+    <button id="responsivebtn">
+        <i  class="fa-solid fa-bars"></i><span>categories</span>
+    </button>
+    </div>
+    </div>
+     <div id="allcategories">
+        
+    </div>
+
+
+
+
+    
+    <section class="main">
+          <aside id="aside">
+        <div class="filter">
+            
+            <span>filter</span>
+            
+            <span><i class="fa-solid fa-filter"></i></span>
+        </div>
+        <div>
+        <input id="filterRange" type="range" min="0" max="4" value="2">
+        <span id="spiciValue">2</span>
+        </div>
+        <div class="chekbox">
+            <div class="check1">
+                <input type="checkbox"><span>no nuts</span>
+            </div>
+            <div class="check2">
+                <input type="checkbox"><span>vegeterian only</span>
+            </div>
+        </div>
+        <div class="buttons">
+            <input  class="asidebtn" id="reset" type="button" value="Reset">
+            <input class="asidebtn" id="apply" type="button" value="Apply Filter">
+        </div>
+    </aside>
+    
+   
+
+<div id="allproducts">
+
+</div>
+
+
+
+
+
+</section>
+
+
+<footer>
+    
+    <div class="contact contact1">
+        <i class="fa-brands fa-facebook fa-lgfa-white"></i>
+        <i class="fa-brands fa-linkedin fa-lg"></i>
+        <i class="fa-brands fa-instagram fa-lg"></i>
+    </div>
+    <div class="contact contact2">
+        <h2>contact us</h2>
+        <button>
+        <i class="fa-solid fa-phone-volume fa-lg"></i><span>597806633</span></button>
+        <button>
+        <i class="fa-solid fa-envelope fa-lg"></i><span>bokuchavag3@gmail.com</span></button>
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+    <script src="script.js"></script>
+    <script src="cart.js"></script>
+</body>
+</html>
