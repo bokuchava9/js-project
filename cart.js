@@ -1,5 +1,3 @@
-// ლოქალ სთორიჯით უკავშირდება პროდუქტების სიას
-
 
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -145,4 +143,8 @@ function removeProduct(){
 }
 
 removeProduct();
+
+
+
+
 

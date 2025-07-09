@@ -13,8 +13,13 @@ async function fetchCategories(){
 }
 
 function displayCategories(Categories){
-    const CategoriesContainer=document.getElementById("allcategories")
-    const CategoriesHTML=Categories.map(
+    const CategoriesContainer=document.getElementById("allcategories");
+    const allCategory = {
+        id: 0,
+        name: "all"
+    };
+    const updatedCategories = [allCategory, ...Categories];
+    const CategoriesHTML=updatedCategories.map(
         (categori)=>
             `
         <li class="categories">
@@ -25,17 +30,18 @@ function displayCategories(Categories){
     ).join("");
     CategoriesContainer.innerHTML=CategoriesHTML;
     const foods=CategoriesContainer.querySelectorAll("a");
-    foods.forEach(food=>{
-        food.addEventListener("click",e=>{
-            e.preventDefault();
-            const choosedCategoryId= Number(food.dataset.id)
-            const filtered=allProducts.filter(Product=>{
-                return Product.categoryId===choosedCategoryId
-            })
+    foods.forEach(food => {
+    food.addEventListener("click", e => {
+        e.preventDefault();
+        const choosedCategoryId = Number(food.dataset.id);
+        if (choosedCategoryId === 0) {
+            displayProducts(allProducts); 
+        } else {
+            const filtered = allProducts.filter(Product => Product.categoryId === choosedCategoryId);
             displayProducts(filtered);
-            
-        })
-    })
+        }
+    });
+});
 }
 window.addEventListener("load", fetchCategories)
 
@@ -63,7 +69,8 @@ function displayProducts(Products){
       <img style="width:200px" src="${Product.image}" alt="${Product.name}" />
       <h2>${Product["name"]}</h2>
       <p class="spiciP">spiciness: ${Product["spiciness"]}<span class="pepper">🌶️</span></p>
-      <p>${Product["nuts"]}</p>
+      <p class="nuts">${Product["nuts"] ? "nuts ✅" : "no nuts ❌"}</p>
+      <p class="vegeterian">${Product["vegeterian"] ? "vegeterian ✅" : "vegeterian ❌"}</p>
       <div class="addcart">
     <p>$ ${Product["price"]}</p>
         <button class="addbtn">Add Cart</button>
@@ -77,16 +84,27 @@ function displayProducts(Products){
 addCartBtns.forEach((btn, index) => {
   btn.addEventListener("click", () => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart.push(Products[index]);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    Swal.fire({
-  position: "center",
-  icon: "success",
-  title: "პროდუქტი დაემატა კალათაში",
-  showConfirmButton: false,
-  timer: 1500
-});
-    
+    const alreadyInCart = cart.find(item => item.id === Products[index].id);
+    if (!alreadyInCart) {
+  cart.push(Products[index]);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  Swal.fire({
+    position: "center",
+    icon: "success",
+    title: "პროდუქტი დაემატა კალათაში",
+    showConfirmButton: false,
+    timer: 1500
+  });
+} else {
+  Swal.fire({
+    position: "center",
+    icon: "warning",
+    title: "ეს პროდუქტი უკვე კალათაშია",
+    showConfirmButton: false,
+    timer: 1500
+  });
+}
+   
   });
 });
 }
@@ -123,7 +141,7 @@ function spiciFilter(){
         const spiciNumber=spiciPLine.replace("spiciness:","").replace("🌶️", "")
         const spiciLevel= Number(spiciNumber)
         if(Number(filterRange.value)===spiciLevel){
-            box.style.display="block"
+            box.style.display="flex"
         }else{
             box.style.display="none"
         }
@@ -131,13 +149,55 @@ function spiciFilter(){
     })
 }
 
+
+
+  
+function vegetarianAndNuts(){
+    const vegBtn=document.getElementById("vegeterian");
+    const nutsBtn=document.getElementById("nuts")
+    const boxes=document.querySelectorAll(".cards");
+    boxes.forEach(box=>{
+        let display=true
+        const vegetarian=box.querySelector(".vegeterian");
+        const nuts=box.querySelector(".nuts");
+        const vegetarianText=vegetarian.textContent.trim();
+        const nustText=nuts.textContent.trim();
+        if(nutsBtn.checked && !nustText.includes("no nuts")){
+            display=false
+        }
+        if(vegBtn.checked && !vegetarianText.includes("vegeterian ✅")){
+            display=false
+        }
+        if(display===true){
+            box.style.display="flex";
+        }else{
+            box.style.display="none"
+        }
+    })
+}
+
+function vegetarianAndNutsDisplay(){
+    const vegBtn=document.getElementById("vegeterian");
+    const nutsBtn=document.getElementById("nuts");
+
+    vegBtn.addEventListener("change", vegetarianAndNuts);
+
+    nutsBtn.addEventListener("change",vegetarianAndNuts);
+    vegetarianAndNuts()
+}
+
+window.addEventListener("load", vegetarianAndNutsDisplay)
+
+
+//////
+
 spiciFilter();
 
 function resetFilter(){
     recetBtn.addEventListener("click",()=>{
     const boxes= document.querySelectorAll(".cards");
         boxes.forEach(box=>{
-            box.style.display="block"
+            box.style.display="flex"
         })
     })  
 }
@@ -197,3 +257,16 @@ function showFilter(){
 showFilter ();
 
 
+
+
+function darkMode(){
+    const nightModeBtn=document.getElementById("night-check")
+nightModeBtn.addEventListener("change",()=>{
+    if(nightModeBtn.checked){
+    document.body.classList.add("dark-mode")
+    }else{
+        document.body.classList.remove("dark-mode");
+    }
+})}
+
+darkMode()
