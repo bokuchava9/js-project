@@ -42,10 +42,25 @@ function displayCategories(Categories){
         }
     });
 });
+targetCaregori()
 }
-window.addEventListener("load", fetchCategories)
+window.addEventListener("load", fetchCategories);
 
+/////kategoriebis feris shecvla
+function targetCaregori(){
+    const categories= document.getElementById("allcategories");
+     const target= categories.querySelectorAll("li");
+    target.forEach(li=>{
+        li.addEventListener("click",()=>{
+            target.forEach(el=>{
+                el.classList.remove("target-categori");
+                
+            })
+            li.classList.add("target-categori")
+        })
+    })} 
 
+ targetCaregori()
 
 async function fetchProducts(){
    try{ const response= await fetch("https://restaurant.stepprojects.ge/api/Products/GetAll");
@@ -84,9 +99,19 @@ function displayProducts(Products){
 addCartBtns.forEach((btn, index) => {
   btn.addEventListener("click", () => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    //
+    const product = Products[index];
     const alreadyInCart = cart.find(item => item.id === Products[index].id);
-    if (!alreadyInCart) {
-  cart.push(Products[index]);
+    if(!currentUser){
+        Swal.fire({
+  icon: "error",
+  title: "პროდუქტის კალათაში დასამატებლად გთხოვთ გაიაროთ ავტორიზაცია!",
+  footer: '<a href="login.html">ავტორიზაცია</a>'
+});
+    }
+    else if (!alreadyInCart) {
+    cart.push({...Products[index], quantity: 1})
+ 
   localStorage.setItem("cart", JSON.stringify(cart));
   Swal.fire({
     position: "center",
@@ -95,26 +120,43 @@ addCartBtns.forEach((btn, index) => {
     showConfirmButton: false,
     timer: 1500
   });
-} else {
+  updateCartUI()
+  
+} 
+else {
+  alreadyInCart.quantity += 1;
+  localStorage.setItem("cart", JSON.stringify(cart));
   Swal.fire({
     position: "center",
-    icon: "warning",
-    title: "ეს პროდუქტი უკვე კალათაშია",
+    icon: "success",
+    title: "პროდუქტის რაოდენობა გაიზარდა",
     showConfirmButton: false,
     timer: 1500
   });
-}
+  updateCartUI();
+}    
    
   });
 });
+;
 }
 
 window.addEventListener("load", fetchProducts);
 
+/// კალათის განახლება 
 
+function updateCartUI() {
+  const cartContainer = document.getElementById("cartcontainer");
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+  const cartHTML = cart.map(product => `
+    <div class="cart-item" data-id="${product.id}">
+      <p>${product.name} - $${product.price}</p>
+    </div>
+  `).join("");
 
-
+  cartContainer.innerHTML = cartHTML;
+}
 
 const filterRange= document.getElementById("filterRange")
 
@@ -129,109 +171,6 @@ filterRange.addEventListener("input",()=>{
 })
 }
 spicinessFilter();
-
-
-function spiciFilter(){
-    
-    filterBtn.addEventListener("click",()=>{
-        const boxes=document.querySelectorAll(".cards")
-    boxes.forEach(box=>{
-        const spiciP= box.querySelector(".spiciP");
-        const spiciPLine= spiciP.textContent.trim();
-        const spiciNumber=spiciPLine.replace("spiciness:","").replace("🌶️", "")
-        const spiciLevel= Number(spiciNumber)
-        if(Number(filterRange.value)===spiciLevel){
-            box.style.display="flex"
-        }else{
-            box.style.display="none"
-        }
-    })
-    })
-}
-
-
-
-  
-function vegetarianAndNuts(){
-    const vegBtn=document.getElementById("vegeterian");
-    const nutsBtn=document.getElementById("nuts")
-    const boxes=document.querySelectorAll(".cards");
-    boxes.forEach(box=>{
-        let display=true
-        const vegetarian=box.querySelector(".vegeterian");
-        const nuts=box.querySelector(".nuts");
-        const vegetarianText=vegetarian.textContent.trim();
-        const nustText=nuts.textContent.trim();
-        if(nutsBtn.checked && !nustText.includes("no nuts")){
-            display=false
-        }
-        if(vegBtn.checked && !vegetarianText.includes("vegeterian ✅")){
-            display=false
-        }
-        if(display===true){
-            box.style.display="flex";
-        }else{
-            box.style.display="none"
-        }
-    })
-}
-
-function vegetarianAndNutsDisplay(){
-    const vegBtn=document.getElementById("vegeterian");
-    const nutsBtn=document.getElementById("nuts");
-
-    vegBtn.addEventListener("change", vegetarianAndNuts);
-
-    nutsBtn.addEventListener("change",vegetarianAndNuts);
-    vegetarianAndNuts()
-}
-
-window.addEventListener("load", vegetarianAndNutsDisplay)
-
-
-//////
-
-spiciFilter();
-
-function resetFilter(){
-    recetBtn.addEventListener("click",()=>{
-    const boxes= document.querySelectorAll(".cards");
-        boxes.forEach(box=>{
-            box.style.display="flex"
-        })
-    })  
-}
-
-resetFilter()
-
-
-
-const cartProducts=[];
-
-const cartContainer= document.getElementById("cartcontainer");
-
-const addCartBtn= document.querySelectorAll(".addbtn")
-
-
-
-function cartDisplay(){
-    const boxes= document.querySelectorAll(".cards");
-    boxes.forEach(box=>{
-    
-        const addCartBtn=document.querySelectorAll(".addbtn")
-        filterBtn.addEventListener("click",()=>{
-            box.push(cartProducts)
-        })
-    })
-    console.log(cartProducts)
-}
-
-cartDisplay()
-
-
-/// კატეგორიების რესპონსივი
-
-
 
 
 function showCategories(){
@@ -270,3 +209,91 @@ nightModeBtn.addEventListener("change",()=>{
 })}
 
 darkMode()
+
+//ყველას ფილტრი
+
+function applyAllFilters() {
+    let filteredProducts = [...allProducts];
+
+    const activeCategory = document.querySelector("#allcategories li.target-categori a");
+    if (activeCategory) {
+        const categoryId = Number(activeCategory.dataset.id);
+        if (categoryId !== 0) {
+            filteredProducts = filteredProducts.filter(product => product.categoryId === categoryId);
+        }
+    }
+
+    const vegBtn = document.getElementById("vegeterian");
+    if (vegBtn.checked) {
+        filteredProducts = filteredProducts.filter(product => product.vegeterian);
+    }
+
+    const nutsBtn = document.getElementById("nuts");
+    if (nutsBtn.checked) {
+        filteredProducts = filteredProducts.filter(product => !product.nuts);
+    }
+
+    const spicinessLevel = Number(filterRange.value);
+    if (!isNaN(spicinessLevel) ) {
+        filteredProducts = filteredProducts.filter(product => product.spiciness === spicinessLevel);
+    }
+
+    displayProducts(filteredProducts);
+}
+
+function setupCategoryFilter() {
+    const CategoriesContainer = document.getElementById("allcategories");
+    const foods = CategoriesContainer.querySelectorAll("a");
+    foods.forEach(food => {
+        food.addEventListener("click", e => {
+            e.preventDefault();
+            const allLi = CategoriesContainer.querySelectorAll("li");
+            allLi.forEach(li => li.classList.remove("target-categori"));
+            food.parentElement.classList.add("target-categori");
+            applyAllFilters();
+        });
+    });
+}
+
+function setupCheckboxFilters() {
+    const vegBtn = document.getElementById("vegeterian");
+    const nutsBtn = document.getElementById("nuts");
+
+    vegBtn.addEventListener("change", applyAllFilters);
+    nutsBtn.addEventListener("change", applyAllFilters);
+}
+
+function setupSpicinessFilter() {
+    filterRange.addEventListener("input", () => {
+        spiciValue.textContent = filterRange.value;
+    });
+
+    filterBtn.addEventListener("click", applyAllFilters);
+}
+
+function setupResetFilter() {
+    recetBtn.addEventListener("click", () => {
+        document.getElementById("vegeterian").checked = false;
+        document.getElementById("nuts").checked = false;
+        filterRange.value = 0;
+        spiciValue.textContent = 0;
+
+        const allLi = document.querySelectorAll("#allcategories li");
+        allLi.forEach(li => li.classList.remove("target-categori"));
+        allLi[0].classList.add("target-categori");
+
+        displayProducts(allProducts);
+    });
+}
+
+window.addEventListener("load", () => {
+    fetchCategories();
+    fetchProducts();
+
+    setupCategoryFilter();
+    setupCheckboxFilters();
+    setupSpicinessFilter();
+    setupResetFilter();
+    updateCartUI()
+});
+
