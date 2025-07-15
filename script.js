@@ -31,17 +31,16 @@ function displayCategories(Categories){
     CategoriesContainer.innerHTML=CategoriesHTML;
     const foods=CategoriesContainer.querySelectorAll("a");
     foods.forEach(food => {
-    food.addEventListener("click", e => {
-        e.preventDefault();
-        const choosedCategoryId = Number(food.dataset.id);
-        if (choosedCategoryId === 0) {
-            displayProducts(allProducts); 
-        } else {
-            const filtered = allProducts.filter(Product => Product.categoryId === choosedCategoryId);
-            displayProducts(filtered);
-        }
+        food.addEventListener("click", e => {
+            e.preventDefault();
+            const allLi = CategoriesContainer.querySelectorAll("li");
+            allLi.forEach(li => li.classList.remove("target-categori"));
+            food.parentElement.classList.add("target-categori");
+
+            applyAllFilters();
+        });
     });
-});
+
 targetCaregori()
 }
 window.addEventListener("load", fetchCategories);
@@ -143,7 +142,7 @@ else {
 
 window.addEventListener("load", fetchProducts);
 
-/// კალათის განახლება 
+/// kalatis ganaxleba 
 
 function updateCartUI() {
   const cartContainer = document.getElementById("cartcontainer");
@@ -210,7 +209,7 @@ nightModeBtn.addEventListener("change",()=>{
 
 darkMode()
 
-//ყველას ფილტრი
+
 
 function applyAllFilters() {
     let filteredProducts = [...allProducts];
@@ -234,28 +233,14 @@ function applyAllFilters() {
     }
 
     const spicinessLevel = Number(filterRange.value);
-    if (!isNaN(spicinessLevel) ) {
+    if (!isNaN(spicinessLevel)  && spicinessLevel !== 0) {
         filteredProducts = filteredProducts.filter(product => product.spiciness === spicinessLevel);
     }
 
     displayProducts(filteredProducts);
 }
 
-function setupCategoryFilter() {
-    const CategoriesContainer = document.getElementById("allcategories");
-    const foods = CategoriesContainer.querySelectorAll("a");
-    foods.forEach(food => {
-        food.addEventListener("click", e => {
-            e.preventDefault();
-            const allLi = CategoriesContainer.querySelectorAll("li");
-            allLi.forEach(li => li.classList.remove("target-categori"));
-            food.parentElement.classList.add("target-categori");
-            applyAllFilters();
-        });
-    });
-}
-
-function setupCheckboxFilters() {
+function CheckboxFilters() {
     const vegBtn = document.getElementById("vegeterian");
     const nutsBtn = document.getElementById("nuts");
 
@@ -263,7 +248,7 @@ function setupCheckboxFilters() {
     nutsBtn.addEventListener("change", applyAllFilters);
 }
 
-function setupSpicinessFilter() {
+function SpicinessFilter() {
     filterRange.addEventListener("input", () => {
         spiciValue.textContent = filterRange.value;
     });
@@ -271,16 +256,16 @@ function setupSpicinessFilter() {
     filterBtn.addEventListener("click", applyAllFilters);
 }
 
-function setupResetFilter() {
+function ResetFilter() {
     recetBtn.addEventListener("click", () => {
         document.getElementById("vegeterian").checked = false;
         document.getElementById("nuts").checked = false;
         filterRange.value = 0;
         spiciValue.textContent = 0;
 
-        const allLi = document.querySelectorAll("#allcategories li");
-        allLi.forEach(li => li.classList.remove("target-categori"));
-        allLi[0].classList.add("target-categori");
+        const allCategori = document.querySelectorAll("#allcategories li");
+        allCategori.forEach(li => li.classList.remove("target-categori"));
+        allCategori[0].classList.add("target-categori");
 
         displayProducts(allProducts);
     });
@@ -289,11 +274,9 @@ function setupResetFilter() {
 window.addEventListener("load", () => {
     fetchCategories();
     fetchProducts();
-
-    setupCategoryFilter();
-    setupCheckboxFilters();
-    setupSpicinessFilter();
-    setupResetFilter();
+    CheckboxFilters();
+    SpicinessFilter();
+    ResetFilter();
     updateCartUI()
 });
 
